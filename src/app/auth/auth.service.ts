@@ -7,12 +7,13 @@ import { LoginResponse } from '../interfaces/login.interface';
   providedIn: 'root',
 })
 export class AuthService {
-  private URL = 'http://localhost:3001';
+  private URL = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
-  obtenerUsuarios(user: string, password: string): Observable<LoginResponse> {
-    return this.http.get<LoginResponse>(`${this.URL}/users`).pipe(
+  obtenerUsuarios(username: string, password: string): Observable<LoginResponse> {
+    const body = { username, password };
+    return this.http.post<LoginResponse>(`${this.URL}/api/auth/login`, body).pipe(
       catchError(this.handleError)
     );
   }

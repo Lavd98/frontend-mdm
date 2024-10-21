@@ -13,7 +13,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 @NgModule({
   declarations: [
     AppComponent,
-    NopageFoundComponent
+    NopageFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,7 +21,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     PagesModule,
     AuthModule,
     HttpClientModule,
-    
   ],
   providers: [
     provideAnimationsAsync()

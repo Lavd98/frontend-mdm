@@ -3,79 +3,40 @@
     <div class="container-fluid">
       <!-- Info boxes -->
       <div class="row">
-        <div class="col-12 col-sm-6 col-md-3">
+
+        <div class="col-lg-4 col-6"   *ngFor="let item of moduleList">
+          <!-- small card -->
+          <div class="small-box bg-success">
+            <div class="inner">
+              <h4>{{item.profile.name}}</h4>
+
+              <p>{{item.subModule.name}}</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-chart-pie"></i>
+            </div>
+            <a style="cursor: pointer;" class="small-box-footer"  (click)="this.redirect(item.subModule.path)">
+              ingresar <i class="fas fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- <div class="col-12 col-sm-6 col-md-3"  *ngFor="let item of moduleList" (click)="this.redirect(item.subModule.path)">
           <div class="info-box">
             <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text">Usuario</span>
+              <span class="info-box-text">{{item.subModule.name}}</span>
               <span class="info-box-number">
-                10
-                <small>Registros</small>
+                <small>{{item.profile.name}}</small>
               </span>
             </div>
-            <!-- /.info-box-content -->
           </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+        </div> -->
 
-            <div class="info-box-content">
-              <span class="info-box-text">Perfiles</span>
-              <span class="info-box-number">
-                3
-                <small>Registros</small>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-
-        <!-- fix for small devices only -->
-        <div class="clearfix hidden-md-up"></div>
-
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">transito</span>
-              <span class="info-box-number">
-                3
-                <small>Registros</small>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Comercialización</span>
-              <span class="info-box-number">
-                3
-                <small>Registros</small>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
       </div>
       <!-- /.row -->
-
-
-    </div><!--/. container-fluid -->
+    </div>
   </section>
   <!-- /.content -->
 

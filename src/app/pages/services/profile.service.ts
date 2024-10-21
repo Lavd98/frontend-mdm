@@ -2,22 +2,23 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { LoginData } from '../../interfaces/login.interface';
+import { ProfileListResponse } from '../../interfaces/profile.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ModuleService {
+export class ProfileService {
 
   private URL='http://localhost:3000'
   constructor(private http:HttpClient) { }
 
-  obtenerModulos(userId: string): Observable<any> {
+  getProfiles(): Observable<ProfileListResponse> {
     const loginData : LoginData = JSON.parse(localStorage.getItem('user') || '{}');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${loginData.token}`);
 
     // Include the headers in the request options
     const options = { headers: headers };
-    return this.http.get<any>(`${this.URL}/api/profiles-sub-modules/user/${userId}`,options).pipe(
+    return this.http.get<ProfileListResponse>(`${this.URL}/api/profiles`,options).pipe(
       catchError(this.handleError)
     );
   }

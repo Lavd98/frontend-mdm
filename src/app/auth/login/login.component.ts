@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   usuario = '';
-  pass = '';
+  password = '';
 
   usuarios!: Usuarios;
 
@@ -22,12 +22,25 @@ export class LoginComponent {
   async onSubmit() {
     try {
       const response: LoginResponse = await firstValueFrom(
-        this.usuariosServices.obtenerUsuarios(this.usuario, this.pass)
+        this.usuariosServices.obtenerUsuarios(this.usuario, this.password)
       );
-      if (response.data) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('userData', response.data.user.id);
-        await this.router.navigate(['/intranet']);
+      debugger;
+      if (response.code === 200 && response?.data && response?.data?.user) {
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            token: response.data.token,
+            user:{
+              id: response.data.user.id,
+              userName: response.data.user.username,
+              firstName: response.data.user.firstName,
+              paternalSurname: response.data.user.paternalSurname,
+              maternalSurname: response.data.user.maternalSurname,
+              profile: response.data.user.profile,
+            }
+          })
+        );
+        await this.router.navigate(['/dashboard']);
       } else {
         await Swal.fire({
           position: 'top-end',

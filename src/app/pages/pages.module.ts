@@ -6,6 +6,7 @@ import{MatFormFieldModule} from '@angular/material/form-field';
 import{MatButtonModule} from '@angular/material/button';
 import{MatInputModule} from '@angular/material/input';
 import{MatPaginatorModule} from '@angular/material/paginator';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -16,6 +17,7 @@ import { HeroesComponent } from './heroes/heroes.component';
 import { ToasterComponent } from './toaster/toaster.component';
 import { PagesComponent } from './pages.component';
 import { SharedModule } from '../shared/shared.module';
+import { UserComponent } from './user/user.component';
 
 
 @NgModule({
@@ -23,7 +25,8 @@ import { SharedModule } from '../shared/shared.module';
     DashboardComponent,
     HeroesComponent,
     ToasterComponent,
-    PagesComponent
+    PagesComponent,
+    UserComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +36,8 @@ import { SharedModule } from '../shared/shared.module';
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    FormsModule
   ]
 })
 export class PagesModule { }

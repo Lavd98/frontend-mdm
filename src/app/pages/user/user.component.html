@@ -1,0 +1,309 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <button class="btn btn-success" (click)="openUserForm()">
+              <i class="fa fa-plus"></i> Registrar
+            </button>
+            <!-- <h3 class="card-title">Responsive Hover Table</h3> -->
+
+            <div class="card-tools">
+              <div class="input-group" style="width: 150px">
+                <input
+                  type="text"
+                  name="table_search"
+                  class="form-control float-right"
+                  placeholder="Buscar"
+                  (keyup)="onSearch($event)"
+                />
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-default">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+              <thead>
+                <tr>
+                  <th>Nombre de usuario</th>
+                  <th>Nombre completo</th>
+                  <th>Apellido paterno</th>
+                  <th>Apellido materno</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of getPaginatedUsers()">
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.firstName }}</td>
+                  <td>{{ user.paternalSurname }}</td>
+                  <td>{{ user.maternalSurname }}</td>
+                  <td>
+                    <span
+                      class="badge bg-{{
+                        user.isActive ? 'success' : 'danger'
+                      }}"
+                      >{{ user.isActive ? "Activo" : "Inactivo" }}</span
+                    >
+                  </td>
+                  <td style="display: flex; gap: 8px">
+                    <button
+                      class="btn btn-xs btn-info"
+                      (click)="openUserForm(user, true)"
+                      title="Ver detalle"
+                    >
+                      <i class="fa fa-eye"></i>
+                    </button>
+                    <button
+                      class="btn btn-xs btn-warning"
+                      (click)="openUserForm(user)"
+                      title="Editar"
+                    >
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button
+                      class="btn btn-xs btn-danger"
+                      (click)="deleteUser(user)"
+                      title="Eliminar"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+
+              </tfoot>
+            </table>
+            <div class="box-footer clearfix" style="margin: 16px 60px;" *ngIf="filteredUsers.length > 0">
+              <ul class="pagination pagination-sm no-margin float-right">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a
+                    class="page-link"
+                    href="javascript:void(0)"
+                    (click)="currentPage = 1"
+                    >&laquo;</a
+                  >
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a
+                    class="page-link"
+                    href="javascript:void(0)"
+                    (click)="currentPage = currentPage - 1"
+                    >&lsaquo;</a
+                  >
+                </li>
+                <li
+                  class="page-item"
+                  *ngFor="
+                    let page of [].constructor(getTotalPages());
+                    let i = index
+                  "
+                  [class.active]="currentPage === i + 1"
+                >
+                  <a
+                    class="page-link"
+                    href="javascript:void(0)"
+                    (click)="currentPage = i + 1"
+                    >{{ i + 1 }}</a
+                  >
+                </li>
+                <li
+                  class="page-item"
+                  [class.disabled]="currentPage === getTotalPages()"
+                >
+                  <a
+                    class="page-link"
+                    href="javascript:void(0)"
+                    (click)="currentPage = currentPage + 1"
+                    >&rsaquo;</a
+                  >
+                </li>
+                <li
+                  class="page-item"
+                  [class.disabled]="currentPage === getTotalPages()"
+                >
+                  <a
+                    class="page-link"
+                    href="javascript:void(0)"
+                    (click)="currentPage = getTotalPages()"
+                    >&raquo;</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<div #userModal class="modal modal-backdrop fade" role="dialog">
+  <div class="modal-dialog content-modal">
+    <!-- Contenido del modal -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{ userId ? "Editar un usuario" : "Registrar un nuevo usuaro" }}
+        </h4>
+        <button type="button" class="close" (click)="closeModal()">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #userForm="ngForm">
+          <div class="form-group">
+            <label for="username">Nombre de usuario</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              [(ngModel)]="selectedUser.username"
+              name="username"
+              placeholder="Nombre de usuario"
+              [readonly]="viewOnly"
+              required
+              pattern="^[a-zA-Z]+$"
+              title="Solo letras"
+              oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '')"
+            />
+          </div>
+          <div class="form-group">
+            <label for="firstName">Nombre</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              [(ngModel)]="selectedUser.firstName"
+              name="firstName"
+              placeholder="Nombre completo"
+              [readonly]="viewOnly"
+              required
+              pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$"
+              title="Solo letras y acentos"
+              oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, '')"
+            />
+          </div>
+          <div class="form-group">
+            <label for="paternalSurname">Apellido paterno</label>
+            <input
+              type="text"
+              class="form-control"
+              id="paternalSurname"
+              [(ngModel)]="selectedUser.paternalSurname"
+              name="paternalSurname"
+              placeholder="Apellido paterno"
+              [readonly]="viewOnly"
+              required
+              pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$"
+              title="Solo letras y acentos"
+              oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, '')"
+            />
+          </div>
+          <div class="form-group">
+            <label for="maternalSurname">Apellido materno</label>
+            <input
+              type="text"
+              class="form-control"
+              id="maternalSurname"
+              [(ngModel)]="selectedUser.maternalSurname"
+              name="maternalSurname"
+              placeholder="Apellido materno"
+              [readonly]="viewOnly"
+              required
+              pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+$"
+              title="Solo letras y acentos"
+              oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, '')"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              [(ngModel)]="selectedUser.email"
+              name="email"
+              placeholder="correo@example.com"
+              [readonly]="viewOnly"
+              required
+              email
+            />
+          </div>
+          <div class="form-group" [hidden]="userId">
+            <label for="password">Password</label>
+            <div class="input-group">
+              <input
+                [type]="passwordVisible ? 'text' : 'password'"
+                class="form-control"
+                id="password"
+                [(ngModel)]="selectedUser.password"
+                name="password"
+                placeholder="Contraseña"
+                [readonly]="viewOnly"
+                [required]="!userId"
+                minlength="6"
+              />
+              <div class="input-group-append">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility()"
+                >
+                  <i
+                    class="fa"
+                    [ngClass]="{
+                      'fa-eye': !passwordVisible,
+                      'fa-eye-slash': passwordVisible
+                    }"
+                  ></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="profile">Perfil</label>
+            <select
+              class="form-control"
+              id="profile"
+              [(ngModel)]="selectedUser.profileId"
+              name="profile"
+              [disabled]="viewOnly"
+              required
+            >
+              <option *ngFor="let profile of profiles" [value]="profile.id">
+                {{ profile.name }}
+              </option>
+              <option [value]="0" disabled>Seleccionar</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="closeModal()">
+          Cerrar
+        </button>
+        <button
+          [hidden]="viewOnly"
+          type="button"
+          class="btn btn-primary"
+          (click)="saveUser()"
+          [disabled]="userForm.invalid"
+        >
+          {{ userId ? "Editar" : "Guardar" }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

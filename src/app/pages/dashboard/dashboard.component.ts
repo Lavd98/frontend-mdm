@@ -1,27 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ModuleService } from '../services/modules.service';
+import { LoginData } from '../../interfaces/login.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  loginData: LoginData = JSON.parse(localStorage.getItem('user') || '{}');
+  moduleList: any[] = [];
+  constructor(private http: HttpClient, private moduleService: ModuleService, private router: Router) {}
 
-
-  constructor(private http: HttpClient, private moduleService: ModuleService) {}
 
   ngOnInit(): void {
-    const userId = sessionStorage.getItem('userData');
-    if (userId) {
-      this.moduleService.obtenerModulos(userId);
-    }
+    this.moduleService
+      .obtenerModulos(this.loginData.user.id)
+      .subscribe((resp) => {
+        this.moduleList = resp.data;
+        console.log(this.moduleList);
+      });
   }
 
-  getUserDataPerfil(userId: string): void {
-    this.http.get(`your-api-endpoint/users/${userId}`).subscribe(response => {
-      console.log(response);
-    });
+  redirect(url: string) {
+    this.router.navigate([url]);
   }
 }

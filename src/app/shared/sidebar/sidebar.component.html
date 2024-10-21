@@ -15,7 +15,7 @@
         <img src="./assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">{{ nombreUsuario }}</a>
+        <a href="#" class="d-block">{{ loginData.user.firstName }} {{loginData.user.paternalSurname}}</a>
       </div>
     </div>
 
@@ -31,31 +31,31 @@
                 <i class="right fas fa-angle-left"></i>
             </p>
           </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item" *ngFor="let subMenuItem of item.submenu">
+          <!-- <ul class="nav nav-treeview">
+            <li class="nav-item" *ngFor="let subMenuItem of item?.submenu">
               <a [routerLink]="subMenuItem.url"  class="nav-link">
                 <i class="{{ subMenuItem.icon }} ml-2"></i>
                 <p class="ml-2">
                   {{ subMenuItem.titulo }}
-                  <i *ngIf="subMenuItem.submenu" class="right fas fa-angle-left"></i> <!-- Icono para desplegar submenús -->
+                  <i *ngIf="subMenuItem.submenu" class="right fas fa-angle-left"></i>
                 </p>
               </a>
-              <ul class="nav nav-treeview" *ngIf="subMenuItem.submenu"> <!-- Verifica si hay un submenú -->
+              <ul class="nav nav-treeview" *ngIf="subMenuItem.submenu">
                 <li class="nav-item" *ngFor="let subSubMenuItem of subMenuItem.submenu">
                   <a [routerLink]="subSubMenuItem.url" class="nav-link">
                     <i class="{{ subSubMenuItem.icon }} ml-3"></i>
-                    <p class="ml-2">{{ subSubMenuItem.titulo }}</p> <!-- Ajusta el margen izquierdo -->
+                    <p class="ml-2">{{ subSubMenuItem.titulo }}</p>
                   </a>
                 </li>
               </ul>
             </li>
-          </ul>
+          </ul>-->
         </li>
         <!-- Logout -->
-        <li class="nav-item">
+        <li class="nav-item" style="cursor: pointer;">
           <a (click)="logout()" class="nav-link">
             <i class="fas fa-sign-out-alt nav-icon"></i>
-            <p class="mr-2">Logout</p>
+            <p class="mr-2">Cerrar sesion</p>
           </a>
         </li>
       </ul>

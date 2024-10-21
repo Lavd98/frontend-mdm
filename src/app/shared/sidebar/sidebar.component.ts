@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { LoginData } from '../../interfaces/login.interface';
 
 interface MenuItem {
-  titulo: string;
+  titulo?: string;
   icono: string;
   url?: string;
 }
@@ -13,13 +14,13 @@ interface MenuItem {
 })
 export class SidebarComponent {
   @Input() menuItems: MenuItem[] = [];
-  nombreUsuario = localStorage.getItem('nombre');
+
+  loginData: LoginData = JSON.parse(localStorage.getItem('user') || '{}');
 
   constructor() {}
 
   logout() {
-    localStorage.removeItem('usuario');
-    localStorage.removeItem('nombre');
+    localStorage.removeItem('user');
     location.href = 'login';
   }
 }
