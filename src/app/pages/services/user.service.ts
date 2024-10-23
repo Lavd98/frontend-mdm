@@ -30,14 +30,22 @@ export class UserService {
     );
   }
 
-  putUser(id: string, body: UserBody): Observable<UserListResponse> {
-    return this.http.put<UserListResponse>(`${this.URL}/api/users/${id}`, body, { headers: this.getHeaders() }).pipe(
+  patchUser(id: string, body: UserBody): Observable<UserListResponse> {
+    return this.http.patch<UserListResponse>(`${this.URL}/api/users/${id}`, body, { headers: this.getHeaders() }).pipe(
       catchError(this.handleError)
     );
   }
 
-  deleteUser(id: string): Observable<UserListResponse> {
-    return this.http.delete<UserListResponse>(`${this.URL}/api/users/${id}`, { headers: this.getHeaders() }).pipe(
+  inactivateUser(id: string): Observable<UserListResponse> {
+    const body = { isActive: false };
+    return this.http.patch<UserListResponse>(`${this.URL}/api/users/${id}/activate`,body, { headers: this.getHeaders() }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  activateUser(id: string): Observable<UserListResponse> {
+    const body = { isActive: true };
+    return this.http.patch<UserListResponse>(`${this.URL}/api/users/${id}/activate`, body, { headers: this.getHeaders() }).pipe(
       catchError(this.handleError)
     );
   }

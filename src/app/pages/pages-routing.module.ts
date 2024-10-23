@@ -3,8 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeroesComponent } from './heroes/heroes.component';
-import { ToasterComponent } from './toaster/toaster.component';
-import { authGuard } from '../guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
@@ -25,6 +24,7 @@ const routes: Routes = [
           {
             path: '',
             component: UserComponent,
+            canActivate: [AuthGuard],
             data: { titulo: 'Listado de Usuarios' },
           }
         ]

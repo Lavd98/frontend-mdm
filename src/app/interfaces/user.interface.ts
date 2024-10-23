@@ -7,7 +7,7 @@ export interface Profile {
 
 // Interfaz para el usuario body
 export interface UserBody extends Omit<User, 'lastLogin' | 'createdAt' | 'updatedAt' | 'profile'> {
-  password: string;
+  password?: string;
   profileId?: number;
 }
 
